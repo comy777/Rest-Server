@@ -49,9 +49,10 @@ const usuariosPut = async (req = request, res = response) => {
 
 const usuariosDelete = async (req = request, res = response) => {
   const { id } = req.params;
+  const { user } = req;
   //const usuario = await User.findByIdAndDelete(id);
   const usuario = await User.findByIdAndUpdate(id, { estado: false });
-  res.json(usuario);
+  res.json({ usuario, user });
 };
 
 module.exports = {

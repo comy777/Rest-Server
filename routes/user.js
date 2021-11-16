@@ -6,14 +6,13 @@ const {
   usuariosPut,
   usuariosDelete,
 } = require("../controllers/user");
-const Role = require("../models/role");
-const { validation } = require("../middlewares/validation");
 const {
   rolValidation,
   existeEmail,
   existeId,
 } = require("../helpers/dbValidation");
 const router = Router();
+const { validation, validarToken, tieneRol } = require("../middlewares");
 
 router.get("/", usuariosGet);
 router.put(
@@ -44,6 +43,9 @@ router.post(
 router.delete(
   "/:id",
   [
+    validarToken,
+    //validarRol,
+    tieneRol("ADMIN_ROLE", "VENTAS_ROLE"),
     check("id", "No es un ID valido").isMongoId(),
     check("id").custom(existeId),
     validation,
