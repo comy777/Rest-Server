@@ -15,7 +15,7 @@
       function handleCredentialResponse(response) {
         let url = window.location.hostname.includes("localhost")
           ? "http://localhost:8080/api/auth/google"
-          : "https://rest-server-comy777.herokuapp.com/";
+          : "https://rest-server-comy777.herokuapp.com/api/auth/google";
         const data = {
           id_token: response.credential,
         };
