@@ -4,9 +4,56 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Acceso denegado</title>
+    <title>Google Singin</title>
   </head>
   <body>
-    <h1>Acceso denegado</h1>
+    <h1>Google Singin</h1>
+    <hr />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <script>
+      function handleCredentialResponse(response) {
+        let url = window.location.hostname.includes("localhost")
+          ? "http://localhost:8080/api/auth/google"
+          : "https://rest-server-comy777.herokuapp.com/";
+        const data = {
+          id_token: response.credential,
+        };
+        fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        })
+          .then((res) => res.json())
+          .then((res) => console.log("Nuestro server", res))
+          .catch(console.log);
+        // const decodeJwtResponse = (token) => {
+        //   console.log(token);
+
+        // };
+        // const responsePayload = decodeJwtResponse(response.credential);
+        // console.log("ID: " + responsePayload.sub);
+        // console.log("Full Name: " + responsePayload.name);
+        // console.log("Given Name: " + responsePayload.given_name);
+        // console.log("Family Name: " + responsePayload.family_name);
+        // console.log("Image URL: " + responsePayload.picture);
+        // console.log("Email: " + responsePayload.email);
+      }
+      window.onload = function () {
+        google.accounts.id.initialize({
+          client_id:
+            "68052694142-gllhtvhsgo0mop1s51lo1nmd13b86uds.apps.googleusercontent.com",
+          callback: handleCredentialResponse,
+          // login_uri: "http://localhost:8080/api/auth/google",
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("buttonDiv"),
+          { theme: "outline", size: "large" } // customization attributes
+        );
+        google.accounts.id.prompt(); // also display the One Tap dialog
+      };
+    </script>
+    <div id="buttonDiv"></div>
+    <!-- <button class="g_id_signout">Sign Out</button> -->
   </body>
 </html>
