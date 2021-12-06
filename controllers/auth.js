@@ -23,7 +23,7 @@ const authLogin = async (req = request, res = response) => {
     //Verificar correo y contraseña
     const validPassword = bcrypt.compareSync(password, user.password);
     if (!validPassword) {
-      return res.json({
+      return res.status(400).json({
         msg: "Usuario y password no coinciden",
       });
     }
