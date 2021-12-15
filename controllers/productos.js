@@ -23,9 +23,7 @@ const obtenerProducto = async (req = request, res = response) => {
   const producto = await Producto.findById(id)
     .populate("usuario", "nombre")
     .populate("categoria", "nombre");
-  res.status(200).json({
-    producto,
-  });
+  res.status(200).json(producto);
 };
 
 const actualizarProducto = async (req = request, res = response) => {
